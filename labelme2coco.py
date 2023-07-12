@@ -6,7 +6,6 @@ from PIL import Image
 from skimage.draw import polygon as draw_polygon
 from pycocotools import mask as mask_utils
 
-
 def convert_labelme_poly_to_coco(labelme_json_dir, output_coco_path):
     # 创建COCO格式的字典
     coco_data = {
@@ -86,7 +85,7 @@ def convert_labelme_poly_to_coco(labelme_json_dir, output_coco_path):
                     'id': annotation_id,
                     'image_id': image_id,
                     'category_id': category_id,
-                    'segmentation': [polygon],
+                    'segmentation': [np.asarray(polygon).flatten().tolist()],
                     'area': float(mask_utils.area(rle)),  # 计算掩膜区域面积
                     'bbox': mask_utils.toBbox(rle).tolist(),
                     'iscrowd': 0  # 默认为非crowd
@@ -101,10 +100,11 @@ def convert_labelme_poly_to_coco(labelme_json_dir, output_coco_path):
     with open(output_coco_path, 'w') as f:
         json.dump(coco_data, f)
 
-
 # 示例用法
-labelme_json_dir = r'C:\Users\15135\Downloads\PaddleYOLO-release-2.6\dataset\coco\train2017'
-output_coco_path = r'C:\Users\15135\Downloads\PaddleYOLO-release-2.6\dataset\coco\annotations\instances_train2017.json'
-# labelme_json_dir = r'C:\Users\15135\Downloads\PaddleYOLO-release-2.6\dataset\coco\val2017'
-# output_coco_path = r'C:\Users\15135\Downloads\PaddleYOLO-release-2.6\dataset\coco\annotations\instances_val2017.json'
+# labelme_json_dir = r'C:\Users\15135\Downloads\PaddleYOLO-release-2.6\dataset\coco\train2017'
+# output_coco_path = r'C:\Users\15135\Downloads\PaddleYOLO-release-2.6\dataset\coco\annotations\instances_train2017.json'
+
+labelme_json_dir = r'C:\Users\15135\Downloads\PaddleYOLO-release-2.6\dataset\coco\val2017'
+output_coco_path = r'C:\Users\15135\Downloads\PaddleYOLO-release-2.6\dataset\coco\annotations\instances_val2017.json'
 convert_labelme_poly_to_coco(labelme_json_dir, output_coco_path)
+
