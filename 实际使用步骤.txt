@@ -1,0 +1,8 @@
+1. 安装环境（官网文档）
+2. 将标注文件修改为coco格式（参考自己写的labelme2coco.py文件）
+  # 一定要注意要求
+3. 修改配置文件
+  # 必须修改：classes类别数；
+  # 容易忽视的地方：coco.py【位于./mmdection/mmdet/datasets/】中的classes和palette相关信息。
+4. 使用命令训练
+   python tools/train.py configs/....../coco.py
